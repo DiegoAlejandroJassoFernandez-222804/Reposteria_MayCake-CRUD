@@ -1,0 +1,81 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-pink-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl">
+        <div class="text-center">
+            <span class="text-3xl font-bold font-dancing text-pink-400 drop-shadow-md">MayCake</span>
+            <h2 class="mt-6 text-3xl font-dancing font-bold text-pink-700">Iniciar Sesión</h2>
+            <p class="mt-2 text-sm text-pink-600">Ingresa tus credenciales para acceder a tu cuenta</p>
+        </div>
+
+        <form class="mt-8 space-y-6" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="remember" value="true">
+            
+            <div class="rounded-md shadow-sm space-y-4">
+                <div>
+                    <label for="id_username" class="block text-sm font-medium text-pink-700">Usuario</label>
+                    <input id="id_username" name="username" type="text" required
+                        class="appearance-none relative block w-full px-4 py-3 border border-pink-300 placeholder-pink-400 text-pink-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                        placeholder="Tu nombre de usuario">
+                    {% if form.username.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.username.errors }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label for="id_password" class="block text-sm font-medium text-pink-700">Contraseña</label>
+                    <input id="id_password" name="password" type="password" required
+                        class="appearance-none relative block w-full px-4 py-3 border border-pink-300 placeholder-pink-400 text-pink-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                        placeholder="Tu contraseña">
+                    {% if form.password.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.password.errors }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-pink-300 rounded">
+                    <label for="remember-me" class="ml-2 block text-sm text-pink-700">Recordarme</label>
+                </div>
+
+                <div class="text-sm">
+                    <a href="#" class="font-medium text-pink-600 hover:text-pink-500">¿Olvidaste tu contraseña?</a>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition duration-300">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <svg class="h-5 w-5 text-pink-300 group-hover:text-pink-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                        </svg>
+                    </span>
+                    Iniciar Sesión
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center mt-6">
+            <p class="text-sm text-pink-600">
+                ¿No tienes una cuenta?
+                <a href="{% url 'registro' %}" class="font-medium text-pink-700 hover:text-pink-500">Regístrate aquí</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .font-dancing {
+        font-family: 'Dancing Script', cursive;
+    }
+    
+    /* Efecto para los inputs al enfocar */
+    input:focus {
+        box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+    }
+</style>
+{% endblock %}

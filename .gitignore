@@ -21,3 +21,10 @@ Thumbs.db
 
 # Configuración de VSCode
 .vscode/
+
+# Dependencias
+node_modules/
+
+# Archivos generados
+static/dist/
+.DS_Store

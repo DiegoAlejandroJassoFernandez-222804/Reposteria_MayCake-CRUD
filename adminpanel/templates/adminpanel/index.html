@@ -1,0 +1,138 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block title %}Panel de Administración | MayCake{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Encabezado -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-dancing font-bold text-pink-700">Panel de Administración</h1>
+            <p class="mt-2 text-lg text-pink-600">Gestión completa de la repostería MayCake</p>
+        </div>
+
+        <!-- Tarjetas de opciones -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Gestión de Usuarios -->
+            <a href="{% url 'adminpanel:gestionar_usuarios' %}" class="admin-card bg-white hover:bg-pink-50 transition duration-300">
+                <div class="p-6 rounded-lg shadow-md h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-pink-100 text-pink-600 mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-800">Gestión de Usuarios</h2>
+                    </div>
+                    <p class="text-gray-600 flex-grow">Administra los usuarios registrados, roles y permisos del sistema.</p>
+                    <span class="mt-4 inline-flex items-center text-pink-600 font-medium">
+                        Acceder
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Gestión de Productos -->
+            <a href="{% url 'adminpanel:lista_productos' %}" class="admin-card bg-white hover:bg-pink-50 transition duration-300">
+                <div class="p-6 rounded-lg shadow-md h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-800">Productos</h2>
+                    </div>
+                    <p class="text-gray-600 flex-grow">Administra el catálogo de productos, edita existentes o añade nuevos.</p>
+                    <span class="mt-4 inline-flex items-center text-purple-600 font-medium">
+                        Administrar
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Crear Producto -->
+            <a href="{% url 'adminpanel:agregar_producto' %}" class="admin-card bg-white hover:bg-pink-50 transition duration-300">
+                <div class="p-6 rounded-lg shadow-md h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-800">Añadir Producto</h2>
+                    </div>
+                    <p class="text-gray-600 flex-grow">Agrega nuevos productos al catálogo con imágenes y descripciones.</p>
+                    <span class="mt-4 inline-flex items-center text-blue-600 font-medium">
+                        Crear nuevo
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Categorías -->
+            <a href="{% url 'adminpanel:crear_categoria' %}" class="admin-card bg-white hover:bg-pink-50 transition duration-300">
+                <div class="p-6 rounded-lg shadow-md h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-800">Categorías</h2>
+                    </div>
+                    <p class="text-gray-600 flex-grow">Gestiona las categorías de productos para organizar tu catálogo.</p>
+                    <span class="mt-4 inline-flex items-center text-green-600 font-medium">
+                        Administrar
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Pedidos -->
+            <a href="{% url 'adminpanel:lista_pedidos' %}" class="admin-card bg-white hover:bg-pink-50 transition duration-300">
+                <div class="p-6 rounded-lg shadow-md h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-800">Pedidos</h2>
+                    </div>
+                    <p class="text-gray-600 flex-grow">Revisa y gestiona todos los pedidos realizados por los clientes.</p>
+                    <span class="mt-4 inline-flex items-center text-yellow-600 font-medium">
+                        Ver pedidos
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos específicos -->
+<style>
+    .font-dancing {
+        font-family: 'Dancing Script', cursive;
+    }
+    .admin-card {
+        transition: all 0.3s ease;
+    }
+    .admin-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}

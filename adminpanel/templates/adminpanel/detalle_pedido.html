@@ -1,0 +1,131 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block title %}Detalle Pedido #{{ pedido.id }} | MayCake{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Encabezado -->
+        <div class="flex justify-between items-start mb-8">
+            <div>
+                <h2 class="text-3xl font-dancing font-bold text-pink-700">Detalle del Pedido #{{ pedido.id }}</h2>
+                <div class="flex items-center mt-2">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold 
+                        {% if pedido.estado == 'pendiente' %}bg-yellow-100 text-yellow-800
+                        {% elif pedido.estado == 'listo' %}bg-blue-100 text-blue-800
+                        {% elif pedido.estado == 'entregado' %}bg-green-100 text-green-800
+                        {% endif %}">
+                        {{ pedido.get_estado_display }}
+                    </span>
+                    <span class="ml-3 text-sm text-gray-600">{{ pedido.fecha|date:"d/m/Y H:i" }}</span>
+                </div>
+            </div>
+            <a href="{% url 'adminpanel:lista_pedidos' %}" class="flex items-center text-pink-600 hover:text-pink-800 transition">
+                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Volver a pedidos
+            </a>
+        </div>
+
+        <!-- Tarjeta de información del pedido -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+            <div class="p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Información del Cliente</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <p class="text-sm text-gray-500">Nombre</p>
+                        <p class="font-medium">{{ pedido.usuario.get_full_name|default:pedido.usuario.username }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Correo electrónico</p>
+                        <p class="font-medium">{{ pedido.usuario.email }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Método de pago</p>
+                        <p class="font-medium">{{ pedido.get_metodo_pago_display }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Total del pedido</p>
+                        <p class="font-bold text-pink-600">${{ pedido.total }}</p>
+                    </div>
+                </div>
+
+                <!-- Actualizar estado -->
+                <h3 class="text-lg font-bold text-gray-800 mb-3">Actualizar Estado</h3>
+                <form method="POST" class="flex flex-col sm:flex-row gap-4">
+                    {% csrf_token %}
+                    <select name="nuevo_estado" class="flex-grow block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 sm:text-sm">
+                        <option value="pendiente" {% if pedido.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                        <option value="listo" {% if pedido.estado == 'listo' %}selected{% endif %}>Listo para entrega</option>
+                        <option value="entregado" {% if pedido.estado == 'entregado' %}selected{% endif %}>Entregado</option>
+                    </select>
+                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition">
+                        Actualizar Estado
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Productos del pedido -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Productos en el pedido</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio Unitario</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for detalle in detalles %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            {% if detalle.producto.imagen %}
+                                            <img class="h-10 w-10 rounded-full object-cover" src="{{ detalle.producto.imagen.url }}" alt="{{ detalle.producto.nombre }}">
+                                            {% else %}
+                                            <div class="h-10 w-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600">
+                                                {{ detalle.producto.nombre|first|upper }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">{{ detalle.producto.nombre }}</div>
+                                            <div class="text-sm text-gray-500">{{ detalle.producto.categoria }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${{ detalle.precio }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ detalle.cantidad }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${{ detalle.subtotal }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-right text-sm font-medium text-gray-500">Total:</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-lg font-bold text-pink-600">${{ pedido.total }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos -->
+<style>
+    .font-dancing {
+        font-family: 'Dancing Script', cursive;
+    }
+</style>
+{% endblock %}

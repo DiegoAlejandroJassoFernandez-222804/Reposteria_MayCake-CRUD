@@ -1,0 +1,129 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block title %}Registro - MayCake{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full bg-white p-10 rounded-2xl shadow-xl">
+        <!-- Encabezado -->
+        <div class="text-center">
+            <span class="text-3xl font-bold font-dancing text-pink-400 drop-shadow-md">MayCake</span>
+            <h2 class="mt-6 text-3xl font-dancing font-bold text-pink-700">Crear Cuenta</h2>
+            <p class="mt-2 text-sm text-pink-600">Únete a nuestra comunidad dulce</p>
+        </div>
+
+        <form class="mt-8 space-y-6" method="post">
+            {% csrf_token %}
+            
+            <!-- Campo de Usuario -->
+            <div>
+                <label for="id_username" class="block text-sm font-medium text-pink-700">
+                    Nombre de usuario
+                </label>
+                <div class="mt-1">
+                    <input type="text" name="username" id="id_username" required autofocus
+                           class="appearance-none relative block w-full px-4 py-3 border border-pink-300 placeholder-pink-400 text-pink-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                           {% if form.username.value %}value="{{ form.username.value }}"{% endif %}>
+                    {% if form.username.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.username.errors }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Campo de Email -->
+            <div>
+                <label for="id_email" class="block text-sm font-medium text-pink-700">
+                    Correo electrónico
+                </label>
+                <div class="mt-1">
+                    <input type="email" name="email" id="id_email" required
+                           class="appearance-none relative block w-full px-4 py-3 border border-pink-300 placeholder-pink-400 text-pink-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                           {% if form.email.value %}value="{{ form.email.value }}"{% endif %}>
+                    {% if form.email.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.email.errors }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Campos de Contraseña -->
+            {% for field in form %}
+                {% if field.name == 'password1' or field.name == 'password2' %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-pink-700">
+                        {{ field.label }}
+                    </label>
+                    <div class="mt-1">
+                        <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}" required
+                               class="appearance-none relative block w-full px-4 py-3 border border-pink-300 placeholder-pink-400 text-pink-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                               {% if field.value %}value="{{ field.value }}"{% endif %}>
+                        {% if field.help_text %}
+                            <div class="mt-2 text-xs text-pink-500">
+                                {% if field.name == 'password1' %}
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        {% for help_text in field.help_text %}
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    {{ field.help_text }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        {% if field.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ field.errors }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Botón de registro -->
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition duration-300">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <svg class="h-5 w-5 text-pink-300 group-hover:text-pink-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                    </span>
+                    Registrarse
+                </button>
+            </div>
+        </form>
+
+        <!-- Sección inferior -->
+        <div class="mt-6">
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-pink-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-pink-500">¿Ya tienes una cuenta?</span>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <a href="{% url 'login' %}" class="w-full flex items-center justify-center px-4 py-2 border border-pink-300 shadow-sm text-sm font-medium rounded-full text-pink-700 bg-white hover:bg-pink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition duration-300">
+                    Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos específicos -->
+<style>
+    .font-dancing {
+        font-family: 'Dancing Script', cursive;
+    }
+    
+    /* Efecto para los inputs al enfocar */
+    input:focus {
+        box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+    }
+    
+    /* Estilo para los mensajes de error */
+    .errorlist {
+        @apply list-none p-0 m-0;
+    }
+</style>
+{% endblock %}
